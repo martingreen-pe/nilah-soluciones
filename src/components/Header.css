@@ -1,0 +1,147 @@
+/* Mobile-first styles */
+.header {
+  background-color: var(--primary-color); /* Magenta suave */
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.header__title {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+}
+
+.menu-button {
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 25px;
+  height: 20px;
+  cursor: pointer;
+  z-index: 2;
+  position: relative;
+  background-color: white;
+}
+
+.menu-icon {
+  background-color: white; /* Cambiado a blanco para hacer el botón más visible */
+  height: 2px;
+  width: 100%;
+  border-radius: 2px;
+  transition: all 0.4s ease;
+}
+
+.menu-icon.open:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.menu-icon.open:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-icon.open:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Menu styles */
+.menu {
+  background-color: var(--primary-color);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.4s ease;
+  z-index: 1;
+}
+
+.menu--open {
+  height: 220px; /* Altura ajustada */
+}
+
+.menu__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.menu__item {
+  margin: 15px 0;
+}
+
+.menu__item a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+  transition: color 0.3s ease-in-out;
+}
+
+.menu__item a:hover {
+  color: white; /* Magenta intenso en hover */
+}
+
+.logout-button {
+  background-color: var(--secondary-color);
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  cursor: pointer;
+  margin: 20px auto; /* Centrar botón en móviles */
+  border-radius: 5px;
+  font-size: 16px;
+  display: flex;
+  justify-content: center; /* Asegurar que el botón esté centrado */
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: var(--hover-color);
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .header__title {
+    font-size: 28px;
+  }
+
+  .menu-button {
+    display: none; /* Ocultar el botón de menú en escritorio */
+  }
+
+  .menu {
+    position: static;
+    height: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .menu__list {
+    display: flex;
+    gap: 30px;
+  }
+
+  .menu__item {
+    margin: 0;
+  }
+
+  .logout-button {
+    margin: 0; /* Ajustar para que no esté centrado en escritorio */
+  }
+}

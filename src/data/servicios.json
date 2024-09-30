@@ -1,0 +1,52 @@
+[
+  {
+    "id": 12,
+    "Nombre del servicio": "Uñas",
+    "Precio Base": null
+  },
+  {
+    "id": 2,
+    "Nombre del servicio": "Manicura",
+    "Precio Base": 40
+  },
+  {
+    "id": 3,
+    "Nombre del servicio": "Pedicura",
+    "Precio Base": 40
+  },
+  {
+    "id": 5,
+    "Nombre del servicio": "Depilación de Cejas",
+    "Precio Base": 15
+  },
+  {
+    "id": 6,
+    "Nombre del servicio": "Pigmentación de Cejas",
+    "Precio Base": 15
+  },
+  {
+    "id": 7,
+    "Nombre del servicio": "Depilación de Rostro",
+    "Precio Base": 40
+  },
+  {
+    "id": 8,
+    "Nombre del servicio": "Planchado de Cejas",
+    "Precio Base": 45
+  },
+  {
+    "id": 9,
+    "Nombre del servicio": "Laminado de Cejas",
+    "Precio Base": 45
+  },
+  {
+    "id": 10,
+    "Nombre del servicio": "Lifting de Pestañas",
+    "Precio Base": 45
+  },
+  {
+    "id": 25,
+    "Nombre del servicio": "Extensiones de Pestañas",
+    "Precio Base": null
+  }
+]

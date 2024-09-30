@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "Técnica": "Clásicas",
+      "Precio": 70
+    },
+    {
+      "id": 2,
+      "Técnica": "Volumen Natural",
+      "Precio": 80
+    },
+    {
+      "id": 3,
+      "Técnica": "Volumen Ruso",
+      "Precio": 85
+    },
+    {
+      "id": 4,
+      "Técnica": "Hibridas",
+      "Precio": 80
+    },
+    {
+      "id": 5,
+      "Técnica": "Mega Volumen",
+      "Precio": 85
+    },
+    {
+      "id": 6,
+      "Técnica": "Rimel o Efecto Mojado",
+      "Precio": 85
+    },
+    {
+      "id": 7,
+      "Técnica": "Efecto Kim o Wispy",
+      "Precio": 90
+    }
+  ]
+  

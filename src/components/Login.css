@@ -1,0 +1,109 @@
+/* Fondo con color claro y un toque morado */
+body {
+    background: var(--card-gradient); /* Degradado en tonos morados */
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh; /* Se ajusta al contenido y ocupa al menos toda la ventana */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .login-card {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  h2 {
+    color: var(--text-color); /* Morado claro para los títulos */
+    margin-bottom: 20px;
+  }
+  
+  .error-message {
+    color: var(--error-color); /* Rojo coral suave para errores */
+    margin-bottom: 15px;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+    color: var(--text-secondary-color); /* Texto gris violáceo */
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .login-input:focus {
+    transform: scale(1.05); /* Crece ligeramente al hacer foco */
+    outline: none;
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--primary-color); /* Botón morado intenso */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .login-button:hover {
+    background-color: var(--hover-color); /* Morado más intenso al hacer hover */
+    transform: scale(1.05); /* Crece al pasar el mouse */
+  }
+  
+  .login-button:active {
+    transform: scale(0.98); /* Reduce al hacer clic */
+  }
+  
+  /* Animación de entrada */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Estilos para pantallas más grandes */
+  @media (min-width: 768px) {
+    .login-card {
+      padding: 40px;
+    }
+  
+    h2 {
+      font-size: 28px;
+    }
+  
+    .login-input {
+      font-size: 18px;
+    }
+  
+    .login-button {
+      font-size: 18px;
+    }
+  }
+  

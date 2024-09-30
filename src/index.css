@@ -1,13 +1,64 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Global Styles - Mobile First */
+:root {
+  --primary-color: #FF4081; /* Magenta suave para botones */
+  --secondary-color: #F50057; /* Magenta intenso para hover */
+  --background-color: #FFF5F7; /* Fondo claro con un toque de rosa pastel */
+  --text-color: #D81B60; /* Rosa intenso para el texto */
+  --text-secondary-color: #FF80AB; /* Rosa claro para el texto secundario */
+  --hover-color: #E91E63; /* Magenta intenso al hacer hover */
+  --success-color: #81C784; /* Verde menta, lo mantenemos igual para contraste */
+  --error-color: #FF5252; /* Rojo coral suave para errores */
+  --card-gradient: linear-gradient(135deg, #FFC1E3, #FF80AB); /* Degradado rosado para las tarjetas */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  /* padding: 15px; */
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  color: var(--text-color);
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+p {
+  color: var(--text-secondary-color);
+}
+
+/* Buttons */
+button {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Global media query */
+@media (min-width: 768px) {
+  body {
+    padding: 30px;
+  }
+
+  h1, h2, h3 {
+    font-size: 2rem;
+  }
 }

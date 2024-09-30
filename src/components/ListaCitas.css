@@ -1,0 +1,101 @@
+/* Mobile First Design */
+.citas-list {
+    padding: 1rem;
+    background-color: var(--background-color);
+    box-sizing: border-box;
+  }
+  
+  .citas-list__items {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .citas-list__item {
+    background: var(--card-gradient);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .citas-list__item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  .citas-list__info {
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    line-height: 1.5;
+  }
+  
+  .info-box {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  
+  .citas-list__button {
+    background-color: var(--error-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .citas-list__button:hover {
+    background-color: var(--hover-color);
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination__button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .pagination__button:hover,
+  .pagination__button.active {
+    background-color: var(--secondary-color);
+    font-weight: bold;
+  }
+  
+  /* Estilos para la paginación activa */
+  .pagination__button.active {
+    font-weight: bold;
+    background-color: var(--secondary-color);
+  }
+  
+  /* Tablet & Larger Screens */
+  @media (min-width: 768px) {
+    .citas-list {
+      max-width: 750px;
+      margin: 0 auto;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .citas-list {
+      max-width: 900px;
+    }
+    .info-box {
+      font-size: 1rem;
+    }
+  }
+  
