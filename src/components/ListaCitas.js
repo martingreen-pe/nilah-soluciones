@@ -22,8 +22,15 @@ function ListaCitas({ citas, onDeleteCita }) {
     setPaginaActual(numeroPagina);
   };
 
+  const totalPaginas = Math.ceil(citas.length / citasPorPagina);
   const paginas = []; // Array para los números de páginas
-  for (let i = 1; i <= Math.ceil(citas.length / citasPorPagina); i++) {
+
+  // Limitar el número de botones de paginación a 5
+  const maxPaginasMostrar = 5;
+  const inicioPagina = Math.max(1, paginaActual - Math.floor(maxPaginasMostrar / 2));
+  const finPagina = Math.min(totalPaginas, inicioPagina + maxPaginasMostrar - 1);
+
+  for (let i = inicioPagina; i <= finPagina; i++) {
     paginas.push(i);
   }
 
@@ -100,6 +107,7 @@ function ListaCitas({ citas, onDeleteCita }) {
   
       {/* Paginación */}
       <div className="pagination">
+        {inicioPagina > 1 && <span>...</span>}
         {paginas.map(numero => (
           <button
             key={numero}
@@ -109,10 +117,10 @@ function ListaCitas({ citas, onDeleteCita }) {
             {numero}
           </button>
         ))}
+        {finPagina < totalPaginas && <span>...</span>}
       </div>
     </div>
   );
-  
 }
 
 export default ListaCitas;

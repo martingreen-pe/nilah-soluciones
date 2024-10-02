@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import Autosuggest from 'react-autosuggest';
 import { getClientes, createCita } from '../services/citasService';
-import serviciosData from '../data/servicios.json'; // Importar el archivo JSON con los servicios
-import tecnicasPrecios from '../data/tecnicas_extensiones.json'; // Importar el archivo JSON de técnicas de pestañas
+import serviciosData from '../data/servicios.json'; 
+import tecnicasPrecios from '../data/tecnicas_extensiones.json';
 import './Formulario.css';
 
 function Formulario({ onCitaCreada }) {
   const [clientes, setClientes] = useState([]);
   const [clienteSeleccionado, setClienteSeleccionado] = useState('');
+  const [clienteSugerencias, setClienteSugerencias] = useState([]);
   const [fechaHora, setFechaHora] = useState(''); 
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState([]);
   const [precioTotal, setPrecioTotal] = useState(0);
@@ -15,7 +17,8 @@ function Formulario({ onCitaCreada }) {
   const [precioTecnica, setPrecioTecnica] = useState(0);
   const [esNuevoCliente, setEsNuevoCliente] = useState(false);
   const [nombreCliente, setNombreCliente] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // Bandera para evitar doble envío
+  const [telefonoCliente, setTelefonoCliente] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); 
 
   // Obtener clientes desde la API
   useEffect(() => {
@@ -53,9 +56,27 @@ function Formulario({ onCitaCreada }) {
     setPrecioTotal(totalBase);
   }, [serviciosSeleccionados, precioPersonalizado, precioTecnica]);
 
+
   // Manejar la selección del cliente existente o nuevo
-  const handleClienteChange = (e) => {
-    setClienteSeleccionado(e.target.value);
+  const obtenerSugerencias = (value) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+
+    return inputLength === 0
+      ? []
+      : clientes.filter(
+          (cliente) =>
+            cliente.field_2717667.toLowerCase().slice(0, inputLength) === inputValue
+        );
+  };
+
+  const manejarSugerenciaSeleccionada = (event, { suggestion }) => {
+    setClienteSeleccionado(suggestion.field_2717667);
+    setTelefonoCliente(suggestion.field_2738060); 
+  };
+
+  const manejarCambiosCliente = (event, { newValue }) => {
+    setClienteSeleccionado(newValue);
   };
 
   // Manejar la selección múltiple de servicios
@@ -110,10 +131,8 @@ function Formulario({ onCitaCreada }) {
       return;
     }
   
-    // Definir el nombre final del cliente dependiendo si es nuevo o existente
-    const nombreClienteFinal = esNuevoCliente
-      ? nombreCliente
-      : clientes.find(cliente => cliente.id === parseInt(clienteSeleccionado))?.field_2707359;
+    const nombreClienteFinal = esNuevoCliente ? nombreCliente : clienteSeleccionado;
+    const telefonoClienteFinal = esNuevoCliente ? telefonoCliente : telefonoCliente;
   
     // Convertir los servicios seleccionados en un string separado por comas
     const serviciosSeleccionadosString = serviciosSeleccionados.join(', ');
@@ -125,6 +144,7 @@ function Formulario({ onCitaCreada }) {
     const nuevaCita = {
       fecha: fechaHora,
       cliente: nombreClienteFinal,
+      telefono: telefonoClienteFinal, // Incluimos el teléfono del cliente
       servicios: serviciosSeleccionadosString,
       precioBase: serviciosSeleccionados.reduce((acc, servicioNombre) => {
         const servicio = serviciosData.find(s => s['Nombre del servicio'] === servicioNombre);
@@ -179,6 +199,7 @@ function Formulario({ onCitaCreada }) {
     setTecnicaSeleccionada('');
     setPrecioTecnica(0);
     setNombreCliente('');
+    setTelefonoCliente(''); // Limpiar el teléfono del cliente
     setEsNuevoCliente(false);
   };
   
@@ -188,29 +209,44 @@ function Formulario({ onCitaCreada }) {
       <div className="form-group">
         <label className="form-label">Cliente:</label>
         {esNuevoCliente ? (
-          <input
-            type="text"
-            className="form-input"
-            value={nombreCliente}
-            onChange={(e) => setNombreCliente(e.target.value)}
-            placeholder="Ingresa el nombre del cliente"
-            required
-          />
+          <>
+            <input
+              type="text"
+              className="form-input"
+              value={nombreCliente}
+              onChange={(e) => setNombreCliente(e.target.value)}
+              placeholder="Ingresa el nombre del cliente"
+              required
+            />
+            <input
+              type="tel"
+              className="form-input"
+              value={telefonoCliente}
+              onChange={(e) => setTelefonoCliente(e.target.value)}
+              placeholder="Ingresa el teléfono del cliente"
+              required
+            />
+          </>
         ) : (
-          <select
-            className="form-input"
-            value={clienteSeleccionado}
-            onChange={handleClienteChange}
-            required
-          >
-            <option value="">Selecciona un cliente</option>
-            {clientes &&
-              clientes.map((cliente) => (
-                <option key={cliente.id} value={cliente.id}>
-                  {cliente.field_2707359}
-                </option>
-              ))}
-          </select>
+          <Autosuggest
+          suggestions={clienteSugerencias}
+          onSuggestionsFetchRequested={({ value }) => setClienteSugerencias(obtenerSugerencias(value))}
+          onSuggestionsClearRequested={() => setClienteSugerencias([])}
+          getSuggestionValue={(sugerencia) => sugerencia.field_2717667}
+          renderSuggestion={(sugerencia) => (
+            <div className="suggestion-item">
+              <span className="suggestion-name">{sugerencia.field_2717667}</span> - <span className="suggestion-phone">{sugerencia.field_2738060}</span>
+            </div>
+          )}
+          inputProps={{
+            placeholder: 'Busca un cliente',
+            value: clienteSeleccionado,
+            onChange: manejarCambiosCliente,
+            className: 'autosuggest-input',  // Aplicamos la clase para los estilos
+          }}
+          onSuggestionSelected={manejarSugerenciaSeleccionada}
+        />
+        
         )}
         <button
           type="button"
@@ -293,5 +329,6 @@ function Formulario({ onCitaCreada }) {
     </form>
   );
 }
+
 
 export default Formulario;

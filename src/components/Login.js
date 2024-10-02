@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Login.css';  // Asegúrate de que esta línea esté bien
+import './Login.css';  // Asegúrate de que el archivo CSS esté correcto
 
 function Login({ onLoginSuccess }) {
   const [username, setUsername] = useState('');
@@ -8,15 +8,34 @@ function Login({ onLoginSuccess }) {
   const [error, setError] = useState(null);
 
   const handleLogin = async () => {
-    console.log('Datos que se envían:', { username, password });  // Verificar lo que se envía
+    // Verificar si los campos están vacíos
+    if (!username || !password) {
+      setError('Por favor, ingresa tanto usuario como contraseña.');
+      return;
+    }
+
+    console.log('Datos que se envían:', { username, password });  // Depuración para ver lo que se envía
     try {
       const response = await axios.post('http://localhost:5000/login', { username, password });
-      console.log('Respuesta del servidor:', response.data);  // Verificar la respuesta del servidor
-      localStorage.setItem('token', response.data.token);
-      onLoginSuccess();
+      
+      console.log('Respuesta del servidor:', response.data);  // Depuración para ver la respuesta del servidor
+
+      // Verificar si se recibe un token
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        onLoginSuccess();
+      } else {
+        setError('Error en el servidor, no se recibió un token.');
+      }
     } catch (err) {
-      console.error('Error en el login:', err);  // Mostrar error en consola si ocurre algo
-      setError('Usuario o contraseña incorrectos');
+      console.error('Error en el login:', err);
+
+      // Diferenciar entre error de credenciales y error de servidor
+      if (err.response && err.response.status === 401) {
+        setError('Usuario o contraseña incorrectos');
+      } else {
+        setError('Hubo un problema con el servidor. Intenta nuevamente más tarde.');
+      }
     }
   };
 
@@ -39,7 +58,9 @@ function Login({ onLoginSuccess }) {
           onChange={(e) => setPassword(e.target.value)}
           className="login-input"
         />
-        <button className="login-button" onClick={handleLogin}>Ingresar</button>
+        <button className="login-button" onClick={handleLogin}>
+          Ingresar
+        </button>
       </div>
     </div>
   );

@@ -1,11 +1,16 @@
+require('dotenv').config(); // Cargar variables de entorno desde .env
+
 const express = require('express');
-const cors = require('cors');  
+const cors = require('cors');
 const axios = require('axios');
+const path = require('path');
 const app = express();
 const port = process.env.PORT || 5000;
 
 // Habilitar CORS para todas las rutas
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000', // Permitir solicitudes desde el frontend
+}));
 
 // Middleware para permitir el manejo de JSON
 app.use(express.json());
@@ -20,7 +25,7 @@ app.post('/citas', async (req, res) => {
   }
 
   try {
-    const response = await axios.post('https://api.baserow.io/api/database/rows/table/361392/', {
+    const response = await axios.post(`${process.env.BASEROW_API_URL}/361392/`, {
       fecha,
       cliente,
       servicio,
@@ -31,7 +36,7 @@ app.post('/citas', async (req, res) => {
       precioFinal
     }, {
       headers: {
-        Authorization: `Token 8FFbA6hV84faBnyiZ8j9ErO3UneUiTEm`,
+        Authorization: `Token ${process.env.API_TOKEN}`,
         'Content-Type': 'application/json'
       }
     });
@@ -46,9 +51,9 @@ app.post('/citas', async (req, res) => {
 // Ruta para obtener todas las citas (GET)
 app.get('/citas', async (req, res) => {
   try {
-    const response = await axios.get('https://api.baserow.io/api/database/rows/table/361392/', {
+    const response = await axios.get(`${process.env.BASEROW_API_URL}/361392/`, {
       headers: {
-        Authorization: `Token 8FFbA6hV84faBnyiZ8j9ErO3UneUiTEm`
+        Authorization: `Token ${process.env.API_TOKEN}`
       }
     });
     res.json({ data: response.data });
@@ -64,7 +69,7 @@ app.put('/citas/:id', async (req, res) => {
   const { fecha, cliente, servicio, tecnica, precioBase, precioPersonalizado, precioPestanas, precioFinal } = req.body;
 
   try {
-    const response = await axios.patch(`https://api.baserow.io/api/database/rows/table/361392/${id}/`, {
+    const response = await axios.patch(`${process.env.BASEROW_API_URL}/361392/${id}/`, {
       fecha,
       cliente,
       servicio,
@@ -75,7 +80,7 @@ app.put('/citas/:id', async (req, res) => {
       precioFinal
     }, {
       headers: {
-        Authorization: `Token 8FFbA6hV84faBnyiZ8j9ErO3UneUiTEm`
+        Authorization: `Token ${process.env.API_TOKEN}`
       }
     });
 
@@ -91,9 +96,9 @@ app.delete('/citas/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    await axios.delete(`https://api.baserow.io/api/database/rows/table/361392/${id}/`, {
+    await axios.delete(`${process.env.BASEROW_API_URL}/361392/${id}/`, {
       headers: {
-        Authorization: `Token 8FFbA6hV84faBnyiZ8j9ErO3UneUiTEm`
+        Authorization: `Token ${process.env.API_TOKEN}`
       }
     });
 
@@ -104,36 +109,41 @@ app.delete('/citas/:id', async (req, res) => {
   }
 });
 
-// Iniciar el servidor
-app.listen(port, () => {
-  console.log(`Servidor escuchando en el puerto ${port}`);
-});
-
 // Ruta de login
 app.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Hacer una petición a la tabla de usuarios en Baserow
-    const response = await axios.get('https://api.baserow.io/api/database/rows/table/364205/', {
+    const response = await axios.get(`${process.env.BASEROW_API_URL}/364205/`, {
       headers: {
-        Authorization: `Token 8FFbA6hV84faBnyiZ8j9ErO3UneUiTEm`
+        Authorization: `Token ${process.env.API_TOKEN}`
       }
     });
 
-    // Buscar si el usuario existe
     const usuarios = response.data.results;
     const usuarioEncontrado = usuarios.find(u => u.field_2731981 === username && u.field_2731982 === password);
 
     if (usuarioEncontrado) {
-      // Si se encuentra, devolver un token (o simplemente confirmar el login)
-      res.json({ message: 'Login exitoso', token: 'some-token' });  // Aquí podrías generar un JWT en lugar del "some-token"
+      res.json({ message: 'Login exitoso', token: 'some-token' });
     } else {
-      // Si no se encuentra el usuario o la contraseña es incorrecta
       res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
     }
   } catch (error) {
     console.error('Error al realizar login:', error.response ? error.response.data : error.message);
     res.status(500).json({ message: 'Error al realizar login', error: error.message });
   }
+});
+
+// Servir archivos estáticos si tienes un frontend construido
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../build')));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+  });
+}
+
+// Iniciar el servidor
+app.listen(port, () => {
+  console.log(`Servidor escuchando en el puerto ${port}`);
 });

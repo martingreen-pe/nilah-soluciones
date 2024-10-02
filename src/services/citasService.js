@@ -31,7 +31,8 @@ export const createCita = async (nuevaCita) => {
       "field_2717674": nuevaCita.precioTecnica !== null ? nuevaCita.precioTecnica : 0,  // Precio de la técnica
       "field_2717671": nuevaCita.precioPersonalizado !== null ? nuevaCita.precioPersonalizado : 0,  // Precio personalizado
       "field_2717673": nuevaCita.precioBase,  // Precio base
-      "field_2717675": nuevaCita.precioTotal  // Precio total
+      "field_2717675": nuevaCita.precioTotal,  // Precio total
+      "field_2738060": nuevaCita.telefono || ''  // Teléfono del cliente (nuevo campo)
     };
 
     // Verificar datos antes de enviar
@@ -77,7 +78,7 @@ export const deleteCita = async (id) => {
 // Función para obtener clientes
 export const getClientes = async () => {
   try {
-    const response = await axios.get(`${API_URL}361392/`, {
+    const response = await axios.get(`${API_URL}362575/`, {
       headers: {
         Authorization: `Token ${API_TOKEN}`
       }
